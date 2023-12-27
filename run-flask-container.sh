@@ -1,5 +1,7 @@
 #!/bin/sh
 
+docker build -t "flask-male-deployment:latest" --rm . && echo "Image done!"
+
 SHARED_DIR=/home/flask_user/flask-app
 HOST_DIR=$(pwd)/flask-app
 
