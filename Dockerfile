@@ -1,7 +1,10 @@
 # Use an official Python runtime as a parent image
 FROM python:3.9
 
-RUN apt-get update && apt-get install -y bash-completion && apt-get install sudo && apt-get install nano && apt-get install tmux
+RUN apt update && \
+    apt-get install -y bash-completion\
+    sudo tmux xterm nano python3-pip git vim python3-pip --no-install-recommends\
+	&& rm -rf /var/lib/apt/lists/
 
 ENV USERNAME flask_user
 ARG USER_ID=1000
