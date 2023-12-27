@@ -1,24 +1,23 @@
-# app.py
-
 from flask import Flask, request, jsonify
 import subprocess
-import joblib
 
 app = Flask(__name__)
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    # Get input features from the request
-    input_data = request.json.get('input_data')
 
-    # Load the trained model
-    model = joblib.load("iris_model.rds")
+@app.route('/predict/<value>', methods=['GET'])
+def predict(value):
 
-    # Make predictions
-    prediction = model.predict(input_data)
+    print(value)
 
     # Return the prediction as JSON
-    return jsonify({'prediction': prediction.tolist()})
+    return jsonify({'prediction': 'xd'})
+
+
+@app.route('/info', methods=['GET'])
+def info():
+    # Debugging information
+    return jsonify({'This app was created by:': ['Ernesto', 'Baptiste']})
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
