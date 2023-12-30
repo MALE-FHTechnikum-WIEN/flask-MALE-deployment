@@ -1,33 +1,42 @@
 from flask import Flask, request, jsonify, render_template
-import subprocess
+from model import run_model
 
 app = Flask(__name__)
 
-
-@app.route('/predict/<value>', methods=['GET'])
-def predict(value):
-
-    print(value)
-
-    # Return the prediction as JSON
-    return jsonify({'prediction': 'xd'})
-
-
 @app.route('/info', methods=['GET'])
 def info():
-    # Debugging information
-    return jsonify({'This app was created by:': ['Ernesto', 'Baptiste Gigachad']})
+    return jsonify({'This app was created by:': ['Ernesto', 'Baptiste']})
 
 @app.route('/', methods=['GET', 'POST'])
+#This is basically a route to the "/" of our site (http://localhost:5000'/')
 def index():
-    if request.method == 'GET': #When a 'GET' request is pushed, the code below will be executed
+    if request.method == 'GET': 
+    #When a 'GET' request is pushed, the code below will be executed
+
         return render_template('index.html')
+        #We return the render_template() function to render the HTML template contained in our 'templates' directory
     
-    if request.method == 'POST': #When a 'POST' request is pushed, the code below will be executed
-        #Prediction is the name we gave our input in the html form, the name has to be given to retrieve the correct data
+    if request.method == 'POST': 
+        #When a 'POST' request is pushed, the code below will be executed
+        
         prediction = request.form.get('prediction', '')
-        print(prediction)
-        return render_template('index.html', response=prediction)
+        #Prediction is the name we gave our input in the html form, the name has to be given to retrieve the correct data
+
+        answer = run_model(float(prediction))
+        #The answer variable is the variable which is the return of our function run_model in which we passed our prediction variable defined earlier
+
+        return render_template('index.html', response=answer)
+        #In this redner_template we passed our variable answer which will be now called 'response' in our HTML template
+    
+@app.route('/predict/<value>', methods=['GET'])
+#This is an equivalent API route : when we enter http://localhost:5000/predict/'our_value' it should return the prediction in an json API dictionary
+
+def predict(value):
+
+    prediction = run_model(value)
+    return jsonify({'Prediction': prediction})
+
 
 if __name__ == '__main__':
+#For those who are not familiar with python or oriented-object, it's just the part of the code that execute everything
     app.run(host='0.0.0.0', debug=True)
