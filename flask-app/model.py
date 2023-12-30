@@ -2,19 +2,22 @@ import rpy2.robjects as robjects
 from rpy2.robjects import conversion, default_converter
 
 
-def run_model(sepal_length, sepal_width): 
-#The function that will be called when the 'POST' request will be sent to our Flask Server
-    
-    #Those condition are just to prevent from any crashes of the server is the user didn't type all the parameters in the inputs
+'''
+    This function will be called when the 'POST' request is sent to the flask application.
+'''
+def run_model(sepal_length, sepal_width):
+
+    # Input validation checking if the function parameters are not empty.
     if (sepal_length == '' or sepal_length == None) or (sepal_width == '' or sepal_width == None):
         return -1
-    
 
-    print(sepal_width, sepal_length)
-    
+    '''
+    This will ensure that the flask and rpy2 code do not interfere with each other by setting the rules for conversion.
+    Due to the flask threaded and rpy2 threaded implementation, both cannot run concurrently in threads.
+    '''
     with conversion.localconverter(default_converter):
-        #robject is the object in which you can write your R code
 
+        # Robject allow to embed R code inside python and execute it
         robjects.r(f'''
                    predict_iris <- function() {{
 
@@ -30,9 +33,8 @@ def run_model(sepal_length, sepal_width):
                        prediction <- predict(rf_model, newdata = new_data_point)
 
                        return(as.character(prediction))
-                       }}
-                   ''')
+                    }}
+                ''')
 
-        # Call the R function and get the predictions
+        # Return as a string robjects
         return str(robjects.r('predict_iris()')[0])
-
