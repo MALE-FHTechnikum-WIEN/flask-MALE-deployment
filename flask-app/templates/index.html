@@ -9,11 +9,11 @@
 
     <title>MALE FLASK WORKSHOP</title>
     <style>
-  
+
       body {
-        border: 2px solid #ddd; 
-        padding: 40px; 
-        margin: 60px; 
+        border: 2px solid #ddd;
+        padding: 40px;
+        margin: 60px;
       }
     </style>
   </head>
@@ -41,10 +41,12 @@
     <div class="alert alert-danger mt-3" role="alert">
         Server response: You must fill all the parameters to make a prediction
     </div>
-    {% else %}
+    {% elif reponse %}
     <div class="alert alert-success mt-3" role="alert">
         Server response: {{ response }}
     </div>
+    {% else %}
+	<div> </div>
     {% endif %}
 
   </body>
