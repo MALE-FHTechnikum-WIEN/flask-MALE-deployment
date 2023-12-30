@@ -23,17 +23,25 @@
 		For this workshop we will use flask to create a web page where users can interact with.
 	</h5>
 
-    <p>The following is a form that will post a reques to our flask backend, which will use the pre-trained R model to predict the species of a plant given a value:</p>
+    <p>The following is a form that will post a request to our flask backend, which will use the pre-trained R model to predict the species of a plant given a value:</p>
 
     <form  action="#" method="post">
       <div class="mb-3">
-        <label class="form-label">Prediction</label>
-        <input type="text" name="prediction" class="form-control" aria-describedby="emailHelp">
+        <label class="form-label">Sepal.Length</label>
+        <input type="text" name="sepal_length" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Sepal.Width</label>
+        <input type="text" name="sepal_width" class="form-control">
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
-    {% if response %}
+    {% if response == -1 %}
+    <div class="alert alert-danger mt-3" role="alert">
+        Server response: You must fill all the parameters to make a prediction
+    </div>
+    {% else %}
     <div class="alert alert-success mt-3" role="alert">
         Server response: {{ response }}
     </div>

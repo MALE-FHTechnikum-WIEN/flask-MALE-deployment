@@ -19,12 +19,13 @@ def index():
     if request.method == 'POST': 
         #When a 'POST' request is pushed, the code below will be executed
         
-        prediction = request.form.get('prediction', '')
-        #Prediction is the name we gave our input in the html form, the name has to be given to retrieve the correct data
-
-        answer = run_model(float(prediction))
+        sepal_length = request.form.get('sepal_length', '')
+        sepal_width = request.form.get('sepal_width', '')
+        #sepal_length and width are the names we gave our input in the html form, the name has to be given to retrieve the correct data
+        
+        answer = run_model(sepal_length, sepal_width)
         #The answer variable is the variable which is the return of our function run_model in which we passed our prediction variable defined earlier
-
+            
         return render_template('index.html', response=answer)
         #In this redner_template we passed our variable answer which will be now called 'response' in our HTML template
     
