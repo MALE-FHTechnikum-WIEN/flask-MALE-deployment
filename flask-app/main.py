@@ -1,16 +1,15 @@
-from flask import Flask, request, jsonify, render_template
 import subprocess
+from flask import Flask, request, jsonify, render_template
+
+from model import run_model
 
 app = Flask(__name__)
-
 
 @app.route('/predict/<value>', methods=['GET'])
 def predict(value):
 
-    print(value)
-
-    # Return the prediction as JSON
-    return jsonify({'prediction': 'xd'})
+    prediction = run_model(value)
+    return jsonify({'Prediction': prediction})
 
 
 @app.route('/info', methods=['GET'])
@@ -22,11 +21,12 @@ def info():
 def index():
     if request.method == 'GET': #When a 'GET' request is pushed, the code below will be executed
         return render_template('index.html')
-    
+
     if request.method == 'POST': #When a 'POST' request is pushed, the code below will be executed
-        #Prediction is the name we gave our input in the html form, the name has to be given to retrieve the correct data
-        prediction = request.form.get('prediction', '')
-        print(prediction)
+
+        value = request.form.get('prediction', '')
+
+        prediction = run_model(value)
         return render_template('index.html', response=prediction)
 
 if __name__ == '__main__':
