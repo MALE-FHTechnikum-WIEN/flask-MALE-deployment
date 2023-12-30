@@ -3,39 +3,36 @@ from model import run_model
 
 app = Flask(__name__)
 
+
+'''
+    A url/info endpoint that could be used as an API call, for example to a model
+'''
 @app.route('/info', methods=['GET'])
 def info():
     return jsonify({'This app was created by:': ['Ernesto', 'Baptiste']})
 
-@app.route('/', methods=['GET', 'POST'])
-#This is basically a route to the "/" of our site (http://localhost:5000'/')
-def index():
-    if request.method == 'GET': 
-    #When a 'GET' request is pushed, the code below will be executed
 
-        return render_template('index.html')
-        #We return the render_template() function to render the HTML template contained in our 'templates' directory
-    
-    if request.method == 'POST': 
-        #When a 'POST' request is pushed, the code below will be executed
-        
+'''
+    We defined the root route the site, located at http://localhost:5000/
+'''
+@app.route('/', methods=['GET', 'POST'])
+def index():
+
+    if request.method == 'GET':
+        return render_template('index.html', response="") # we return the HTML templates using the template located in the templates directory
+
+
+    if request.method == 'POST':
+
+        # Sepal_length and width are the names we gave our input in the html form, the name has to be given to retrieve the correct data
         sepal_length = request.form.get('sepal_length', '')
         sepal_width = request.form.get('sepal_width', '')
-        #sepal_length and width are the names we gave our input in the html form, the name has to be given to retrieve the correct data
-        
+
+        # The answer variable is the variable which is the return of our function run_model in which we passed our prediction variable defined earlier
         answer = run_model(sepal_length, sepal_width)
-        #The answer variable is the variable which is the return of our function run_model in which we passed our prediction variable defined earlier
-            
+
+        # In this template we passed our variable answer which will be now called 'response' in our HTML template
         return render_template('index.html', response=answer)
-        #In this redner_template we passed our variable answer which will be now called 'response' in our HTML template
-    
-@app.route('/predict/<value>', methods=['GET'])
-#This is an equivalent API route : when we enter http://localhost:5000/predict/'our_value' it should return the prediction in an json API dictionary
-
-def predict(value):
-
-    prediction = run_model(value)
-    return jsonify({'Prediction': prediction})
 
 
 if __name__ == '__main__':

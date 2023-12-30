@@ -38,15 +38,15 @@
     </form>
 
     {% if response == -1 %}
-    <div class="alert alert-danger mt-3" role="alert">
-        Server response: You must fill all the parameters to make a prediction
-    </div>
-    {% elif reponse %}
-    <div class="alert alert-success mt-3" role="alert">
-        Server response: {{ response }}
-    </div>
+		<div class="alert alert-danger mt-3" role="alert">
+			Server response: You must fill all the parameters to make a prediction
+		</div>
+    {% elif response == "" %}
+		<div> {{ response }}  </div>
     {% else %}
-	<div> </div>
+		<div class="alert alert-success mt-3" role="alert">
+			Server response: {{ response }}
+		</div>
     {% endif %}
 
   </body>
